@@ -16,8 +16,8 @@ const App = () => {
       <div className="container__text">
         <textarea
           value={textAreaValue}
-          onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>): void =>
-            setTextAreaValue(ev.target.value)
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void =>
+            setTextAreaValue(event.currentTarget.value)
           }
           className="container__input"
         />
@@ -30,6 +30,10 @@ const App = () => {
       >
         Button
       </div>
+      <div
+        className="container__output"
+        dangerouslySetInnerHTML={{ __html: `djasd` }}
+      />
     </div>
   );
 };
