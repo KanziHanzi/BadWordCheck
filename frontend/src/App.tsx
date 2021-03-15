@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import "./scss/style.scss";
 
 const fetchData = (message: string) => {
-  fetch(
-    `https://nethergames.de:1763/check?message=${message}&render=true`
-  ).then((res) => {
-    console.log(res);
-  });
+  const http = new XMLHttpRequest();
+  const url = `https://nethergames.de:1763/check?message=${message}&render=true`;
+  const outputEl = document.querySelector('.container__output');
+  http.open("GET", url);
+  http.send();
+  http.onreadystatechange = (e) => {
+    outputEl!.innerHTML = http.responseText;
+  }
 };
 
 const App = () => {
@@ -32,7 +35,7 @@ const App = () => {
       </div>
       <div
         className="container__output"
-        dangerouslySetInnerHTML={{ __html: `djasd` }}
+        // dangerouslySetInnerHTML={{ __html: `djasd` }}
       />
     </div>
   );
