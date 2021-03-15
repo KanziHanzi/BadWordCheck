@@ -1,0 +1,9 @@
+de\starmixcraft\StringChecker\ckecker\StringChecker.class
+de\starmixcraft\StringChecker\cmd\CommandManager.class
+de\starmixcraft\StringChecker\cmd\CommandExecutor.class
+de\starmixcraft\StringChecker\ckecker\CheckResponds.class
+de\starmixcraft\StringChecker\cmd\CommandManager$1.class
+de\starmixcraft\StringChecker\restListener\StringCheckRestListener.class
+de\starmixcraft\StringChecker\Main.class
+de\starmixcraft\StringChecker\logging\MessageLogger.class
+de\starmixcraft\StringChecker\ckecker\CheckMatch.class

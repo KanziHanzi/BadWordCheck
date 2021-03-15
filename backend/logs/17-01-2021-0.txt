@@ -1,0 +1,3 @@
+[21:00:42] [INFO] Registerd handler check for type GET with method handel0
+[21:00:43] [INFO] No ssl support, certs invallid
+[21:00:46] [INFO] Shutting down
