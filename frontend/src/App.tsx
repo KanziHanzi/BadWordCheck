@@ -31,11 +31,10 @@ const App = () => {
         }}
         className="container__button"
       >
-        Button
+        Check String
       </div>
       <div
         className="container__output"
-        // dangerouslySetInnerHTML={{ __html: `djasd` }}
       />
     </div>
   );

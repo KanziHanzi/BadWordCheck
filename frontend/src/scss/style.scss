@@ -31,22 +31,23 @@ $buttonColor : linear-gradient(to right, #ffefba, #ffffff);
 
   &__output {
     width: 100%;
-    border: 1px solid red;
+    color: #fff;
     max-width: 500px;
     padding: 20px 0;
     margin-top: 20px;
   }
 
   &__button {
+    font-size: 20px;
     margin-top: 20px;
     padding: 5px 15px;
     background: $buttonColor;
     border: none;
-    border-radius: 5px;
-    // box-shadow: 0 0 1px 1px $buttonColor;
+    border-radius: 2px;
+    cursor: pointer;
 
     &:hover {
-      cursor: pointer;
+      background: opacify($color: #000000, $amount: 0.8)
     }
   }
 }
