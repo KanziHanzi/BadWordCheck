@@ -10,8 +10,9 @@ b {
   font-weight: bold;
 }
 
-$button-color : #fff;
-$button-hover-color: #000;
+$button-color: #f8f9fa;
+$button-hover-color: #e2e6ea;
+$button-hover-border-color: #dae0e5;
 $container-width: 500px;
 
 .wordcheck {
@@ -54,14 +55,15 @@ $container-width: 500px;
     padding: 15px;
     width: 510px;
     background-color: $button-color;
-    border: none;
+    border: $button-color;
     border-radius: 2px;
     cursor: pointer;
     transition: all .3s ease;
-
-    &:hover {
-      background-color: $button-hover-color;
-      opacity: .8;
-    }
   }
+}
+
+.wordcheck__button:hover {
+  background-color: $button-hover-color;
+  border: $button-hover-border-color;
+  opacity: .8;
 }
