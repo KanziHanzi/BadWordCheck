@@ -10,11 +10,23 @@ const fetchData = (message: string) => {
   http.send();
   http.onreadystatechange = () => {
     outputEl.current!.innerHTML = http.responseText;
+    if (http.readyState == 4) {
+      listBadWords();
+    }
   };
 };
 
 const showErrorMessage = (error: string) => {
   outputEl.current!.innerHTML = error;
+};
+
+const listBadWords = () => {
+  const badWordList = document.getElementsByTagName("b");
+  const badWordArr = [];
+  let i: number = 0;
+  for (i; i < badWordList.length; i++) {
+    badWordArr.push(badWordList[i].innerHTML);
+  }
 };
 
 const App = () => {
@@ -31,7 +43,7 @@ const App = () => {
           className="wordcheck__textarea"
         />
         <button
-          onClick={() => {
+          onClick={async () => {
             textAreaValue !== ""
               ? fetchData(textAreaValue)
               : showErrorMessage("Bitte füge einen Text ein");
