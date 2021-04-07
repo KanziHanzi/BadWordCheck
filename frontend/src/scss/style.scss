@@ -6,11 +6,16 @@ body {
 
 b {
   color: red;
+  font-style: italic;
+  font-weight: bold;
 }
 
-$buttonColor : linear-gradient(to right, #ffefba, #ffffff);
+$button-color: #f8f9fa;
+$button-hover-color: #e2e6ea;
+$button-hover-border-color: #dae0e5;
+$container-width: 500px;
 
-.container {
+.wordcheck {
   font-family: monospace;
   width: 100%;
   height: 100vh;
@@ -20,38 +25,57 @@ $buttonColor : linear-gradient(to right, #ffefba, #ffffff);
   flex-direction: column;
   background: linear-gradient(to bottom, #2C5364, #203A43, #0F2027);
 
-  
-  &__text {
-    width: 500px;
-    aspect-ratio: 1/1;
-    background: #fff;
+  &__container {
+    max-width: $container-width;
   }
 
-  &__input {
+  &__textarea {
     width: 100%;
-    height: 100%;
+    height: 200px;
     padding: 5px;
+    font-size: 16px;
+    border: none;
+    background: #fff;
+    resize: none;
   }
 
   &__output {
-    width: 100%;
-    color: #fff;
-    max-width: 500px;
-    padding: 20px 0;
-    margin-top: 20px;
+    color: black;
+    width: 500px;
+    height: 200px;
+    background: white;
+    padding: 5px;
+    font-size: 16px;
   }
 
   &__button {
-    font-size: 20px;
-    margin-top: 20px;
-    padding: 5px 15px;
-    background: $buttonColor;
-    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 50px 0;
+    padding: 15px;
+    width: 510px;
+    background-color: $button-color;
+    border: $button-color;
     border-radius: 2px;
     cursor: pointer;
-
-    &:hover {
-      background: opacify($color: #000000, $amount: 0.8)
-    }
+    transition: all .3s ease;
   }
+
+  &__score {
+    width: 80px;
+    aspect-ratio: 2/1;
+    border: 2px dotted;
+    margin: 0 auto;
+    margin-top: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    color: #fff;
+  }
+}
+
+.wordcheck__button:hover {
+  background-color: $button-hover-color;
+  border: $button-hover-border-color;
+  opacity: .8;
 }
