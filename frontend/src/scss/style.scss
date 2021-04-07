@@ -60,6 +60,18 @@ $container-width: 500px;
     cursor: pointer;
     transition: all .3s ease;
   }
+
+  &__score {
+    width: 80px;
+    aspect-ratio: 2/1;
+    border: 2px dotted;
+    margin: 0 auto;
+    margin-top: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    color: #fff;
+  }
 }
 
 .wordcheck__button:hover {
