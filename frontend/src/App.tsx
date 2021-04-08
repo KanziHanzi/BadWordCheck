@@ -37,40 +37,39 @@ const badWordScore = (badWords: any) => {
   const allWordsCount = allWordsArray.length;
 
   const score = badWordsCount / allWordsCount;
-  const formattedScore = Math.round(score*100)/100;
+  const trimmedScore = Math.round(score*100)/100;
+  const formattedScore = trimmedScore * 100 + '%'
 
-  console.log(formattedScore);
-
-  switch (formattedScore !== undefined && formattedScore !== null) {
-    case formattedScore === 0:
+  switch (trimmedScore !== undefined && trimmedScore !== null) {
+    case trimmedScore === 0:
       scoreEl.current!.style.borderColor = scoreColors.perfect;
       break;
-    case formattedScore > 0 && formattedScore <= 0.2:
+    case trimmedScore > 0 && trimmedScore <= 0.2:
       console.log('light');
       scoreEl.current!.style.borderColor = scoreColors.light;
       break;
-    case formattedScore > 0.2 && formattedScore <= 0.4:
+    case trimmedScore > 0.2 && trimmedScore <= 0.4:
       console.log('medium');
       scoreEl.current!.style.borderColor = scoreColors.medium;
       break;
-    case formattedScore > 0.4 && formattedScore <= 0.6:
+    case trimmedScore > 0.4 && trimmedScore <= 0.6:
       console.log('high');
       scoreEl.current!.style.borderColor = scoreColors.high;
       break;
-    case formattedScore > 0.6 && formattedScore <= 0.8:
+    case trimmedScore > 0.6 && trimmedScore <= 0.8:
       console.log('veryHigh');
       scoreEl.current!.style.borderColor = scoreColors.veryHigh;
       break;
-    case formattedScore > 0.8 && formattedScore < 1:
+    case trimmedScore > 0.8 && trimmedScore < 1:
       console.log('extreme');
       scoreEl.current!.style.borderColor = scoreColors.extreme;
       break;
-    case formattedScore === 1:
+    case trimmedScore === 1:
       console.log('not safe for work');
       scoreEl.current!.style.borderColor = scoreColors.notSafeForWork;
       break;
     }
-  scoreEl.current!.innerHTML = formattedScore.toString();
+  scoreEl.current!.innerHTML = formattedScore;
 };
 
 const outputEl = React.createRef<HTMLDivElement>();
