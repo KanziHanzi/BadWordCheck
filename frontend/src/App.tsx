@@ -1,37 +1,40 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import "./scss/style.scss";
 import { scoreColors } from "./utils/scoreColors.js";
 
 const outputEl = React.createRef<HTMLDivElement>();
 const scoreEl = React.createRef<HTMLDivElement>();
 
-const fetchData = (message: string) => {
-  const http = new XMLHttpRequest();
-  const url = `https://nethergames.de:1763/check?message=${message}&render=true`;
-  http.open("GET", url);
-  http.send();
-  http.onreadystatechange = () => {
-    outputEl.current!.innerHTML = http.responseText;
-    if (http.readyState === 4) {
-      listBadWords();
-      BadWordScore.createScore(listBadWords());
-    }
-  };
-};
-
-const showErrorMessage = (error: string) => {
-  outputEl.current!.innerHTML = error;
-};
-
-const listBadWords = () => {
-  const badWordNodes = document.getElementsByTagName("b");
-  const badWordArr = [];
-  let i: number = 0;
-  for (i; i < badWordNodes.length; i++) {
-    badWordArr.push(badWordNodes[i].innerHTML);
+class TextData {
+  static fetchData(message: string) {
+    const http = new XMLHttpRequest();
+    const url = `https://nethergames.de:1763/check?message=${message}&render=true`;
+    http.open("GET", url);
+    http.send();
+    http.onreadystatechange = () => {
+      outputEl.current!.innerHTML = http.responseText;
+      if (http.readyState === 4) {
+        TextData.listBadWords();
+        BadWordScore.createScore(TextData.listBadWords());
+      }
+    };
   }
-  return badWordArr;
-};
+
+  static showErrorMessage(error: string) {
+    outputEl.current!.innerHTML = error;
+  };
+
+  static listBadWords() {
+    const badWordNodes = document.getElementsByTagName("b");
+    const badWordArr = [];
+    let i: number = 0;
+    for (i; i < badWordNodes.length; i++) {
+      badWordArr.push(badWordNodes[i].innerHTML);
+    }
+    return badWordArr;
+  };
+}
+
 
 class BadWordScore extends React.Component {
   static trimmedScore: number;
@@ -43,6 +46,7 @@ class BadWordScore extends React.Component {
   static badWordsCount: number;
 
    static createScore(el: string[]) {
+     console.log(el)
     this.allWords = outputEl.current!.innerText;
     this.allWordsArray = this.allWords.split(/\s+/);
     this.allWordsCount = this.allWordsArray.length;
@@ -94,7 +98,7 @@ class BadWordScore extends React.Component {
   }
 };
 
-class App extends React.Component<{}, { textAreaValue: string }> {
+class Container extends React.Component<{}, { textAreaValue: string }> {
   constructor(props: any) {
     super(props);
     this.state = { textAreaValue: "" };
@@ -107,29 +111,37 @@ class App extends React.Component<{}, { textAreaValue: string }> {
     });
   }
 
-  render(): ReactNode {
+  render() {
+    return (
+      <div className="wordcheck__container">
+        <textarea
+          placeholder="Hier Text eingeben"
+          value={this.state.textAreaValue}
+          onChange={this.handleInput}
+          className="wordcheck__textarea"
+        />
+        <button
+          onClick={async () => {
+            this.state.textAreaValue !== ""
+              ? TextData.fetchData(this.state.textAreaValue)
+              : TextData.showErrorMessage("Bitte füge einen Text ein");
+          }}
+          className="wordcheck__button"
+        >
+          Check String
+        </button>
+        <div className="wordcheck__output" ref={outputEl} />
+        <BadWordScore />
+      </div>
+    )
+  }
+}
+
+class App extends React.Component {
+  render() {
     return (
       <div className="wordcheck">
-        <div className="wordcheck__container">
-          <textarea
-            placeholder="Hier Text eingeben"
-            value={this.state.textAreaValue}
-            onChange={this.handleInput}
-            className="wordcheck__textarea"
-          />
-          <button
-            onClick={async () => {
-              this.state.textAreaValue !== ""
-                ? fetchData(this.state.textAreaValue)
-                : showErrorMessage("Bitte füge einen Text ein");
-            }}
-            className="wordcheck__button"
-          >
-            Check String
-          </button>
-          <div className="wordcheck__output" ref={outputEl} />
-          <BadWordScore />
-        </div>
+        <Container />
       </div>
     );
   }
