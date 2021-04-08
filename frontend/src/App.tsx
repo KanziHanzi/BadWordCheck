@@ -1,109 +1,150 @@
-import React, { useState } from "react";
+import React from "react";
 import "./scss/style.scss";
-import { scoreColors } from './utils/scoreColors.js';
-
-const fetchData = (message: string) => {
-  const http = new XMLHttpRequest();
-  const url = `https://nethergames.de:1763/check?message=${message}&render=true`;
-  http.open("GET", url);
-  http.send();
-  http.onreadystatechange = () => {
-    outputEl.current!.innerHTML = http.responseText;
-    if (http.readyState == 4) {
-      listBadWords();
-      badWordScore(listBadWords());
-    }
-  };
-};
-
-const showErrorMessage = (error: string) => {
-  outputEl.current!.innerHTML = error;
-};
-
-const listBadWords = () => {
-  const badWordNodes = document.getElementsByTagName("b");
-  const badWordArr = [];
-  let i: number = 0;
-  for (i; i < badWordNodes.length; i++) {
-    badWordArr.push(badWordNodes[i].innerHTML);
-  }
-  return badWordArr;
-};
-
-const badWordScore = (badWords: any) => {
-  const allWords = outputEl.current!.innerText;
-  const allWordsArray = allWords.split(/\s+/);
-  const badWordsCount = badWords.length;
-  const allWordsCount = allWordsArray.length;
-
-  const score = badWordsCount / allWordsCount;
-  const formattedScore = Math.round(score*100)/100;
-
-  console.log(formattedScore);
-
-  switch (formattedScore !== undefined && formattedScore !== null) {
-    case formattedScore === 0:
-      scoreEl.current!.style.borderColor = scoreColors.perfect;
-      break;
-    case formattedScore > 0 && formattedScore <= 0.2:
-      console.log('light');
-      scoreEl.current!.style.borderColor = scoreColors.light;
-      break;
-    case formattedScore > 0.2 && formattedScore <= 0.4:
-      console.log('medium');
-      scoreEl.current!.style.borderColor = scoreColors.medium;
-      break;
-    case formattedScore > 0.4 && formattedScore <= 0.6:
-      console.log('high');
-      scoreEl.current!.style.borderColor = scoreColors.high;
-      break;
-    case formattedScore > 0.6 && formattedScore <= 0.8:
-      console.log('veryHigh');
-      scoreEl.current!.style.borderColor = scoreColors.veryHigh;
-      break;
-    case formattedScore > 0.8 && formattedScore < 1:
-      console.log('extreme');
-      scoreEl.current!.style.borderColor = scoreColors.extreme;
-      break;
-    case formattedScore === 1:
-      console.log('not safe for work');
-      scoreEl.current!.style.borderColor = scoreColors.notSafeForWork;
-      break;
-    }
-  scoreEl.current!.innerHTML = formattedScore.toString();
-};
+import { scoreColors } from "./utils/scoreColors.js";
 
 const outputEl = React.createRef<HTMLDivElement>();
 const scoreEl = React.createRef<HTMLDivElement>();
 
-const App = () => {
-  const [textAreaValue, setTextAreaValue] = useState<string>("");
-  return (
-    <div className="wordcheck">
+class TextData {
+  static fetchData(message: string) {
+    const http = new XMLHttpRequest();
+    const url = `https://nethergames.de:1763/check?message=${message}&render=true`;
+    http.open("GET", url);
+    http.send();
+    http.onreadystatechange = () => {
+      outputEl.current!.innerHTML = http.responseText;
+      if (http.readyState === 4) {
+        TextData.listBadWords();
+        BadWordScore.createScore(TextData.listBadWords());
+      }
+    };
+  }
+
+  static showErrorMessage(error: string) {
+    outputEl.current!.innerHTML = error;
+  };
+
+  static listBadWords() {
+    const badWordNodes = document.getElementsByTagName("b");
+    const badWordArr = [];
+    let i: number = 0;
+    for (i; i < badWordNodes.length; i++) {
+      badWordArr.push(badWordNodes[i].innerHTML);
+    }
+    return badWordArr;
+  };
+}
+
+
+class BadWordScore extends React.Component {
+  static trimmedScore: number;
+  static formattedScore: string;
+  static score: number;
+  static allWordsCount: number;
+  static allWordsArray: string[];
+  static allWords: string;
+  static badWordsCount: number;
+
+   static createScore(el: string[]) {
+     console.log(el)
+    this.allWords = outputEl.current!.innerText;
+    this.allWordsArray = this.allWords.split(/\s+/);
+    this.allWordsCount = this.allWordsArray.length;
+    this.score = el.length / this.allWordsCount;
+    BadWordScore.trimScore();
+    BadWordScore.formatScore();
+    BadWordScore.colorCodeScore();
+  }
+
+  static trimScore() {
+    BadWordScore.trimmedScore = Math.round(BadWordScore.score * 100) / 100;
+  }
+
+  static formatScore() {
+    BadWordScore.formattedScore = BadWordScore.trimmedScore * 100 + "%";
+  }
+
+  static colorCodeScore() {
+    switch (BadWordScore.allWords !== "") {
+      case BadWordScore.trimmedScore === 0:
+        scoreEl.current!.style.borderColor = scoreColors.perfect;
+        break;
+      case BadWordScore.trimmedScore > 0 && BadWordScore.trimmedScore <= 0.2:
+        scoreEl.current!.style.borderColor = scoreColors.light;
+        break;
+      case BadWordScore.trimmedScore > 0.2 && BadWordScore.trimmedScore <= 0.4:
+        scoreEl.current!.style.borderColor = scoreColors.medium;
+        break;
+      case BadWordScore.trimmedScore > 0.4 && BadWordScore.trimmedScore <= 0.6:
+        scoreEl.current!.style.borderColor = scoreColors.high;
+        break;
+      case BadWordScore.trimmedScore > 0.6 && BadWordScore.trimmedScore <= 0.8:
+        scoreEl.current!.style.borderColor = scoreColors.veryHigh;
+        break;
+      case BadWordScore.trimmedScore > 0.8 && BadWordScore.trimmedScore < 1:
+        scoreEl.current!.style.borderColor = scoreColors.extreme;
+        break;
+      case BadWordScore.trimmedScore === 1:
+        scoreEl.current!.style.borderColor = scoreColors.notSafeForWork;
+        break;
+    }
+    scoreEl.current!.innerHTML = BadWordScore.formattedScore;
+  }
+
+  render() {
+    return (
+      <div className="wordcheck__score" ref={scoreEl} />
+    )
+  }
+};
+
+class Container extends React.Component<{}, { textAreaValue: string }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { textAreaValue: "" };
+    this.handleInput = this.handleInput.bind(this);
+  }
+
+  handleInput(event: any) {
+    this.setState(() => {
+      return { textAreaValue: (event.target as HTMLTextAreaElement).value };
+    });
+  }
+
+  render() {
+    return (
       <div className="wordcheck__container">
         <textarea
           placeholder="Hier Text eingeben"
-          value={textAreaValue}
-          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>): void =>
-            setTextAreaValue(event.currentTarget.value)
-          }
+          value={this.state.textAreaValue}
+          onChange={this.handleInput}
           className="wordcheck__textarea"
         />
         <button
           onClick={async () => {
-            textAreaValue !== ""
-              ? fetchData(textAreaValue)
-              : showErrorMessage("Bitte füge einen Text ein");
+            this.state.textAreaValue !== ""
+              ? TextData.fetchData(this.state.textAreaValue)
+              : TextData.showErrorMessage("Bitte füge einen Text ein");
           }}
           className="wordcheck__button"
         >
           Check String
         </button>
         <div className="wordcheck__output" ref={outputEl} />
-        <div className="wordcheck__score" ref={scoreEl} />
+        <BadWordScore />
       </div>
-    </div>
-  );
-};
+    )
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <div className="wordcheck">
+        <Container />
+      </div>
+    );
+  }
+}
 
 export default App;
