@@ -46,7 +46,6 @@ class BadWordScore extends React.Component {
   static badWordsCount: number;
 
    static createScore(el: string[]) {
-     console.log(el)
     this.allWords = outputEl.current!.innerText;
     this.allWordsArray = this.allWords.split(/\s+/);
     this.allWordsCount = this.allWordsArray.length;
